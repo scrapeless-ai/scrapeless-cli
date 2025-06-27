@@ -33,7 +33,7 @@ case "$ARCH" in
   *) echo "❌ Unsupported architecture: $ARCH" && exit 1 ;;
 esac
 
-FILENAME="scrapeless_${OS}_${ARCH}"
+FILENAME="scrapeless-cli_${OS}_${ARCH}"
 EXT="tar.gz"
 [[ "$OS" == "windows" ]] && EXT="zip"
 
