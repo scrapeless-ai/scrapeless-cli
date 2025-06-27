@@ -10,7 +10,7 @@ import (
 
 var (
 	versionFlag  bool
-	Version      = "v0.0.1"
+	Version      = "latest"
 	template     utils.Project
 	templateName string
 	createFlag   bool
