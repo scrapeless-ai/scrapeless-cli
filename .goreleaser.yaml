@@ -7,6 +7,8 @@ before:
 
 builds:
   - binary: scrapeless
+    ldflags:
+      - -s -w -X github.com/scrapeless-ai/scrapeless-cli/cmd.Version={{ .Version }}
     env:
       - CGO_ENABLED=0
     goos:
