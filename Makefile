@@ -2,7 +2,7 @@
 BINARY_NAME = scrapeless
 
 # Default version (can be overridden with VERSION=x.y.z)
-VERSION ?= v1.0.0
+VERSION ?= v0.0.1
 
 # Default output directory
 DIST_DIR = dist
