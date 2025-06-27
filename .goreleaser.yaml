@@ -6,7 +6,7 @@ before:
     - go generate ./...
 
 builds:
-  - binary: scrapeless
+  - binary: scrapeless-cli
     ldflags:
       - -s -w -X github.com/scrapeless-ai/scrapeless-cli/cmd.Version={{ .Version }}
     env:

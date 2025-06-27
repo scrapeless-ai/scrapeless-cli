@@ -10,7 +10,7 @@ import (
 
 var (
 	versionFlag  bool
-	Version      = "dev"
+	Version      = "v0.0.1"
 	template     utils.Project
 	templateName string
 	createFlag   bool
@@ -27,9 +27,9 @@ func Execute() {
 }
 
 var rootCmd = &cobra.Command{
-	Use:   "scrapeless",
+	Use:   "scrapeless-cli",
 	Short: "Command-line interface for managing Scrapeless actors",
-	Long: `scrapeless is a command-line tool for creating, building, and running Scrapeless actor projects.
+	Long: `scrapeless-cli is a command-line tool for creating, building, and running Scrapeless actor projects.
 It supports interactive project generation, template-based initialization, and quick local execution.`,
 
 	Run: func(cmd *cobra.Command, args []string) {

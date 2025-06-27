@@ -5,7 +5,7 @@ set -e
 REPO="scrapeless-ai/scrapeless-cli"
 INSTALL_DIR="$HOME/.local/bin"
 
-echo "📦 Installing scrapeless..."
+echo "📦 Installing scrapeless-cli..."
 
 # Get latest release version
 VERSION=$(curl -s "https://api.github.com/repos/$REPO/releases/latest" | grep '"tag_name":' | head -1 | sed -E 's/.*"([^"]+)".*/\1/')
@@ -63,8 +63,8 @@ for f in "$EXTRACT_DIR"/*; do
 done
 rm -rf "$EXTRACT_DIR"
 
-BINARY_NAME="scrapeless"
-[[ "$OS" == "windows" ]] && BINARY_NAME="scrapeless.exe"
+BINARY_NAME="scrapeless-cli"
+[[ "$OS" == "windows" ]] && BINARY_NAME="scrapeless-cli.exe"
 
 echo "Installed at: $INSTALL_DIR/$BINARY_NAME"
 
