@@ -1,5 +1,5 @@
 # Binary name as defined in goreleaser.yaml
-BINARY_NAME = scrapeless
+BINARY_NAME = scrapeless-cli
 
 # Default version (can be overridden with VERSION=x.y.z)
 VERSION ?= v0.0.1
