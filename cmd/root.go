@@ -29,12 +29,13 @@ func Execute() {
 var rootCmd = &cobra.Command{
 	Use:   "scrapeless-cli",
 	Short: "Command-line interface for managing Scrapeless actors",
-	Long: `scrapeless-cli is a command-line tool for creating, building, and running Scrapeless actor projects.
-It supports interactive project generation, template-based initialization, and quick local execution.`,
+	Long: `scrapeless-cli is a command-line tool for creating, running Scrapeless actor projects.
+It supports interactive project generation, template-based initialization, and quick local execution.
+To learn more, visit the GitHub repository: https://github.com/scrapeless-ai/scrapeless-cli`,
 
 	Run: func(cmd *cobra.Command, args []string) {
 		if versionFlag {
-			fmt.Printf("scrapeless version: %s\n", Version)
+			fmt.Printf("scrapeless-cli version: %s\n", Version)
 			return
 		}
 		if createFlag {
