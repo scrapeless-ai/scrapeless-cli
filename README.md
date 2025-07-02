@@ -78,7 +78,7 @@ scrapeless-cli --version
 | `--create`  | `-c`  | Launch interactive template selection and naming           |
 | `--tmpl`    | `-t`  | Choose a template (`start_with_golang`, `start_with_node`) |
 | `--name`    | `-n`  | Set the project folder name (default: `my-actor`)          |
-| `--version` | `-v`  | Print the version number of `scrapeless`                   |
+| `--version` | `-v`  | Print the version number of `scrapeless-cli`               |
 | `--run`     | `-r`  | Quickly launch your actor                                  |
 
 ## 📸 Example
