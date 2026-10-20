@@ -1,0 +1,11 @@
+src/
+test/
+scripts/
+.github/
+.env*
+*.mdx
+requirement_*.md
+tsconfig*.json
+pnpm-lock.yaml
+coverage/
+*.log

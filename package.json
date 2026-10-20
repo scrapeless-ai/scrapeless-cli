@@ -1,0 +1,25 @@
+{
+  "name": "scrapeless",
+  "version": "0.1.0",
+  "description": "Unified Scrapeless CLI for Web Unlocker, Crawl, AI Scraper, proxies and cloud browser automation",
+  "type": "module",
+  "bin": { "scrapeless": "dist/cli.js" },
+  "files": ["dist", "README.md"],
+  "engines": { "node": ">=22" },
+  "packageManager": "pnpm@10.18.3",
+  "repository": { "type": "git", "url": "git+https://github.com/scrapeless-ai/scrapeless-cli.git" },
+  "homepage": "https://github.com/scrapeless-ai/scrapeless-cli#readme",
+  "bugs": { "url": "https://github.com/scrapeless-ai/scrapeless-cli/issues" },
+  "keywords": ["scrapeless", "cli", "scraping", "crawler", "proxy", "ai", "browser"],
+  "publishConfig": { "access": "public" },
+  "scripts": {
+    "dev": "tsx src/cli.ts",
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test test/*.test.ts",
+    "check": "pnpm typecheck && pnpm test && pnpm build",
+    "prepack": "pnpm build"
+  },
+  "dependencies": { "commander": "^14.0.0" },
+  "devDependencies": { "@types/node": "^22.0.0", "semver": "^7.7.0", "tsx": "^4.20.0", "typescript": "^5.9.0" }
+}

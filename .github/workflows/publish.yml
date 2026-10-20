@@ -1,0 +1,42 @@
+name: Publish NPM
+on:
+  push:
+    tags: ['v*', '[0-9]*']
+permissions:
+  contents: read
+concurrency:
+  group: npm-publish-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          persist-credentials: false
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Derive package version and npm channel from Git tag
+        id: release
+        run: node scripts/release.mjs
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+      - name: Typecheck, test and build
+        run: pnpm check
+      - name: Pack the tested build
+        run: npm pack --ignore-scripts
+      - name: Publish package
+        run: npm publish "scrapeless-${RELEASE_VERSION}.tgz" --access public --tag "$NPM_DIST_TAG"
+        env:
+          RELEASE_VERSION: ${{ steps.release.outputs.version }}
+          NPM_DIST_TAG: ${{ steps.release.outputs.dist_tag }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

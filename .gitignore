@@ -1,0 +1,17 @@
+node_modules/
+dist/
+coverage/
+*.tgz
+*.log
+.env
+.env.*
+!.env.example
+.DS_Store
+.idea/
+.vscode/
+.scrapeless/
+.cache/
+tmp/
+*.tsbuildinfo
+*.tgz
+test.md
