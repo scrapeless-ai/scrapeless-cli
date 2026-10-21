@@ -1,4 +1,27 @@
+<p align="center">
+  <a href="https://app.scrapeless.com/passport/register?utm_source=github&amp;utm_medium=referral&amp;utm_campaign=scrapeless-cli&amp;utm_content=repository-readme">
+    <img src="assets/scrapeless-cli-banner.png" alt="Scrapeless CLI: collect web content and AI answers, generate proxy URLs, and automate cloud browsers. Start with $5 free credits, no credit card required." width="100%" />
+  </a>
+</p>
+
 # Scrapeless CLI
+
+Unified CLI for Scrapeless Web Unlocker, Crawl, AI Scraper, proxy URL generation, and cloud browser automation.
+
+**[$5 free credits · No credit card required → Sign up](https://app.scrapeless.com/passport/register?utm_source=github&utm_medium=referral&utm_campaign=scrapeless-cli&utm_content=repository-readme)**
+
+<p align="center">
+  <a href="https://app.scrapeless.com/passport/register?utm_source=github&amp;utm_medium=referral&amp;utm_campaign=scrapeless-cli&amp;utm_content=repository-readme"><img src="assets/start-free.svg" alt="Start free with Scrapeless" /></a>
+  <a href="https://www.scrapeless.com/en/blog?utm_source=github&amp;utm_medium=referral&amp;utm_campaign=scrapeless-cli&amp;utm_content=repository-readme"><img src="assets/blog.svg" alt="Read Scrapeless web scraping guides" /></a>
+  <a href="https://x.com/Scrapelessteam?utm_source=github&amp;utm_medium=referral&amp;utm_campaign=scrapeless-cli&amp;utm_content=repository-readme"><img src="assets/x.svg" alt="Follow Scrapeless on X" /></a>
+  <a href="https://www.linkedin.com/company/scrapeless/?utm_source=github&amp;utm_medium=referral&amp;utm_campaign=scrapeless-cli&amp;utm_content=repository-readme"><img src="assets/linkedin.svg" alt="Follow Scrapeless on LinkedIn" /></a>
+</p>
+
+Scrape a single page, create a crawl task, or get Markdown answers from AI platforms. HTTP commands support file output and full JSON responses.
+
+- **Documentation:** [CLI overview](https://docs.scrapeless.com/en/docs/developer-tools/cli/overview/?utm_source=github&utm_medium=referral&utm_campaign=scrapeless-cli&utm_content=repository-readme)
+- **API key:** [Scrapeless dashboard](https://app.scrapeless.com/?utm_source=github&utm_medium=referral&utm_campaign=scrapeless-cli&utm_content=repository-readme) · [Setup guide](https://docs.scrapeless.com/en/docs/get-started/get-and-protect-your-api-key/?utm_source=github&utm_medium=referral&utm_campaign=scrapeless-cli&utm_content=repository-readme)
+- **Command entry point:** `scrapeless <command>` · `scrapeless --help`
 
 A unified Scrapeless command-line tool built with TypeScript. Access Web Unlocker, Crawl, AI Scraper, proxy URL generation, and cloud browsers through a single `scrapeless` command.
 
@@ -34,7 +57,7 @@ The versions and channels in these examples must already be published to npm.
 
 ## Quick Start
 
-Get an API token from the [Scrapeless Dashboard](https://app.scrapeless.com/), then run:
+Get an API token from the [Scrapeless Dashboard](https://app.scrapeless.com/?utm_source=github&utm_medium=referral&utm_campaign=scrapeless-cli&utm_content=repository-readme), then run:
 
 ```bash
 scrapeless config set api_token YOUR_API_TOKEN
@@ -304,7 +327,7 @@ scrapeless browser --session-id TASK_ID close
 
 All arguments after `browser`, including `--help`, `--version`, and `--`, are forwarded to the upstream CLI, along with standard input/output and exit codes. Arguments are passed directly without shell parsing.
 
-The upstream repository is [scrapeless-ai/scrapeless-agent-browser](https://github.com/scrapeless-ai/scrapeless-agent-browser). The verified npm package and command name for v0.1.1 is **`scrapeless-scraping-browser`**. The wrapper uses this published package and its binaries; `scrapeless-agent-browser` is the repository name, not the npm package name used by this wrapper.
+The upstream repository is [scrapeless-ai/scrapeless-agent-browser](https://github.com/scrapeless-ai/scrapeless-agent-browser?utm_source=github&utm_medium=referral&utm_campaign=scrapeless-cli&utm_content=repository-readme). The verified npm package and command name for v0.1.1 is **`scrapeless-scraping-browser`**. The wrapper uses this published package and its binaries; `scrapeless-agent-browser` is the repository name, not the npm package name used by this wrapper.
 
 On first use, including `--help`, the CLI:
 
@@ -393,3 +416,25 @@ git push origin v0.2.0-beta.1
 - **Task timeout**: The task may still be running on the server. Use the returned ID with `crawl result` or `ai result`, adding `--wait` to continue waiting.
 - **Automatic browser installation fails**: Confirm that Node.js and npm are available, the cache directory is writable, and npm and GitHub are reachable, then retry. Downloads that fail SHA-256 verification are not executed.
 - **Upstream browser session errors**: Specify `--session-id` explicitly and check whether the session has expired. Session behavior is determined by the pinned upstream version.
+
+## Related projects
+
+| **Project** | **Purpose** |
+| :--- | :--- |
+| [Node.js SDK](https://github.com/scrapeless-ai/sdk-node?utm_source=github&utm_medium=referral&utm_campaign=scrapeless-cli&utm_content=repository-readme) · [Python SDK](https://github.com/scrapeless-ai/sdk-python?utm_source=github&utm_medium=referral&utm_campaign=scrapeless-cli&utm_content=repository-readme) · [Go SDK](https://github.com/scrapeless-ai/sdk-go?utm_source=github&utm_medium=referral&utm_campaign=scrapeless-cli&utm_content=repository-readme) | Integrate Scrapeless into application code |
+| [Scrapeless MCP Server](https://github.com/scrapeless-ai/scrapeless-mcp-server?utm_source=github&utm_medium=referral&utm_campaign=scrapeless-cli&utm_content=repository-readme) | Access Scrapeless from MCP-compatible AI clients |
+| [Scrapeless Agent Browser](https://github.com/scrapeless-ai/scrapeless-agent-browser?utm_source=github&utm_medium=referral&utm_campaign=scrapeless-cli&utm_content=repository-readme) | Upstream CLI used by `scrapeless browser` |
+| [Scrapeless Respondo](https://github.com/scrapeless-ai/respondo?utm_source=github&utm_medium=referral&utm_campaign=scrapeless-cli&utm_content=repository-readme) | Extract and transform saved HTML and JSON locally |
+| [Amazon Scraper](https://github.com/scrapeless-ai/amazon-scraper?utm_source=github&utm_medium=referral&utm_campaign=scrapeless-cli&utm_content=repository-readme) | Amazon product, seller, search, and Rufus API examples |
+
+Related projects have their own installation and usage instructions.
+
+## Learn more
+
+[Web Unlocker](https://docs.scrapeless.com/en/docs/web-unlocker/introduction/?utm_source=github&utm_medium=referral&utm_campaign=scrapeless-cli&utm_content=repository-readme) · [Crawl](https://docs.scrapeless.com/en/docs/browser-crawl/crawl/introduction/?utm_source=github&utm_medium=referral&utm_campaign=scrapeless-cli&utm_content=repository-readme) · [AI Scraper](https://docs.scrapeless.com/en/docs/ai-scraper/quickstart/introduction/?utm_source=github&utm_medium=referral&utm_campaign=scrapeless-cli&utm_content=repository-readme) · [Agent Browser](https://docs.scrapeless.com/en/docs/browser-crawl/agent-browser/introduction/?utm_source=github&utm_medium=referral&utm_campaign=scrapeless-cli&utm_content=repository-readme) · [Proxies](https://docs.scrapeless.com/en/docs/proxies/introduction/?utm_source=github&utm_medium=referral&utm_campaign=scrapeless-cli&utm_content=repository-readme)
+
+[SDKs](https://docs.scrapeless.com/en/docs/developer-tools/sdks/overview/?utm_source=github&utm_medium=referral&utm_campaign=scrapeless-cli&utm_content=repository-readme) · [MCP](https://docs.scrapeless.com/en/docs/developer-tools/scrapeless-mcp/overview/?utm_source=github&utm_medium=referral&utm_campaign=scrapeless-cli&utm_content=repository-readme) · [Blog](https://www.scrapeless.com/en/blog?utm_source=github&utm_medium=referral&utm_campaign=scrapeless-cli&utm_content=repository-readme)
+
+## Contact us
+
+Report CLI bugs or request features through [GitHub Issues](https://github.com/scrapeless-ai/scrapeless-cli/issues?utm_source=github&utm_medium=referral&utm_campaign=scrapeless-cli&utm_content=repository-readme). For product questions, join [Discord](https://discord.gg/VU2vtbq7Q2?utm_source=github&utm_medium=referral&utm_campaign=scrapeless-cli&utm_content=repository-readme) or contact us on [Telegram](https://t.me/scrapeless?utm_source=github&utm_medium=referral&utm_campaign=scrapeless-cli&utm_content=repository-readme). Never include API keys in public reports.
