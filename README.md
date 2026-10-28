@@ -19,7 +19,7 @@ Unified CLI for Scrapeless Web Unlocker, Crawl, AI Scraper, proxy URL generation
 
 Scrape a single page, create a crawl task, or get Markdown answers from AI platforms. HTTP commands support file output and full JSON responses.
 
-- **Documentation:** [CLI overview](https://docs.scrapeless.com/en/docs/developer-tools/cli/overview/?utm_source=github&utm_medium=referral&utm_campaign=scrapeless-cli&utm_content=repository-readme)
+- **Documentation:** [CLI overview](https://docs.scrapeless.com/en/docs/developer-tools/cli/?utm_source=github&utm_medium=referral&utm_campaign=scrapeless-cli&utm_content=repository-readme)
 - **API key:** [Scrapeless dashboard](https://app.scrapeless.com/?utm_source=github&utm_medium=referral&utm_campaign=scrapeless-cli&utm_content=repository-readme) · [Setup guide](https://docs.scrapeless.com/en/docs/get-started/get-and-protect-your-api-key/?utm_source=github&utm_medium=referral&utm_campaign=scrapeless-cli&utm_content=repository-readme)
 - **Command entry point:** `scrapeless <command>` · `scrapeless --help`
 
