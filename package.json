@@ -1,7 +1,7 @@
 {
   "name": "scrapeless",
-  "version": "0.1.0",
-  "description": "Unified Scrapeless CLI for Web Unlocker, Crawl, AI Scraper, proxies and cloud browser automation",
+  "version": "0.1.1",
+  "description": "Unified Scrapeless CLI for Web Unlocker, Crawl, AI Scraper, Scraping API, proxies and cloud browser automation",
   "type": "module",
   "bin": { "scrapeless": "dist/cli.js" },
   "files": ["dist", "README.md"],
