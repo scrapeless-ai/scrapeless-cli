@@ -10,6 +10,16 @@ export class ApiClient {
   }
 
   async request(path: string, body?: unknown, signal?: AbortSignal): Promise<unknown> {
+    const { data } = await this.send(path, body, signal, true);
+    return data;
+  }
+
+  // Preserve HTTP status for APIs whose task lifecycle is expressed by 200/201.
+  async requestResponse(path: string, body?: unknown, signal?: AbortSignal): Promise<{ status: number; data: unknown }> {
+    return this.send(path, body, signal, false);
+  }
+
+  private async send(path: string, body: unknown, signal: AbortSignal | undefined, checkEnvelope: boolean): Promise<{ status: number; data: unknown }> {
     const timeout = AbortSignal.timeout(this.timeout);
     try {
       const response = await fetch(`${this.base.replace(/\/$/, '')}${path}`, {
@@ -24,11 +34,13 @@ export class ApiClient {
       try { data = JSON.parse(text); } catch {
         throw new Error(response.ok ? 'API returned invalid JSON.' : `HTTP ${response.status}: ${text.slice(0, 500)}`);
       }
-      if (!response.ok || (isObject(data) && (data.success === false || (typeof data.code === 'number' && data.code >= 400)))) {
-        const detail = isObject(data) ? data.message ?? data.error ?? data : data;
-        throw new Error(`HTTP ${response.status}: ${typeof detail === 'string' ? detail : JSON.stringify(detail)}`);
+      if (!response.ok || (checkEnvelope && isObject(data) && (data.success === false || (typeof data.code === 'number' && data.code >= 400)))) {
+        // Existing commands retain their error-envelope semantics and messages.
+        // Status-based scraping APIs preserve the entire HTTP error response.
+        const detail = checkEnvelope && isObject(data) ? data.message ?? data.error ?? data : data;
+        throw new Error(`HTTP ${response.status}: ${checkEnvelope && typeof detail === 'string' ? detail : JSON.stringify(detail)}`);
       }
-      return data;
+      return { status: response.status, data };
     } catch (error) {
       const message = timeout.aborted ? `Request timed out after ${this.timeout}ms.` : (error as Error).message;
       throw new Error(message.split(this.token).join('********'));

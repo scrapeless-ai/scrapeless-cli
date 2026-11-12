@@ -6,7 +6,7 @@
 
 # Scrapeless CLI
 
-Unified CLI for Scrapeless Web Unlocker, Crawl, AI Scraper, proxy URL generation, and cloud browser automation.
+Unified CLI for Scrapeless Web Unlocker, Crawl, AI Scraper, Scraping API, proxy URL generation, and cloud browser automation.
 
 **[$5 free credits · No credit card required → Sign up](https://app.scrapeless.com/passport/register?utm_source=github&utm_medium=referral&utm_campaign=scrapeless-cli&utm_content=repository-readme)**
 
@@ -17,13 +17,13 @@ Unified CLI for Scrapeless Web Unlocker, Crawl, AI Scraper, proxy URL generation
   <a href="https://www.linkedin.com/company/scrapeless/?utm_source=github&amp;utm_medium=referral&amp;utm_campaign=scrapeless-cli&amp;utm_content=repository-readme"><img src="assets/linkedin.svg" alt="Follow Scrapeless on LinkedIn" /></a>
 </p>
 
-Scrape a single page, create a crawl task, or get Markdown answers from AI platforms. HTTP commands support file output and full JSON responses.
+Scrape a single page, create a crawl task, get structured Google Search results, or get Markdown answers from AI platforms. HTTP commands support file output and full JSON responses.
 
 - **Documentation:** [CLI overview](https://docs.scrapeless.com/en/docs/developer-tools/cli/?utm_source=github&utm_medium=referral&utm_campaign=scrapeless-cli&utm_content=repository-readme)
 - **API key:** [Scrapeless dashboard](https://app.scrapeless.com/?utm_source=github&utm_medium=referral&utm_campaign=scrapeless-cli&utm_content=repository-readme) · [Setup guide](https://docs.scrapeless.com/en/docs/get-started/get-and-protect-your-api-key/?utm_source=github&utm_medium=referral&utm_campaign=scrapeless-cli&utm_content=repository-readme)
 - **Command entry point:** `scrapeless <command>` · `scrapeless --help`
 
-A unified Scrapeless command-line tool built with TypeScript. Access Web Unlocker, Crawl, AI Scraper, proxy URL generation, and cloud browsers through a single `scrapeless` command.
+A unified Scrapeless command-line tool built with TypeScript. Access Web Unlocker, Crawl, AI Scraper, Scraping API, proxy URL generation, and cloud browsers through a single `scrapeless` command.
 
 | Command | Description |
 | --- | --- |
@@ -34,7 +34,8 @@ A unified Scrapeless command-line tool built with TypeScript. Access Web Unlocke
 | `scrapeless proxy create` | Generate an authenticated proxy URL |
 | `scrapeless browser <...>` | Automatically install and run the upstream browser CLI |
 | `scrapeless config / auth` | Configure credentials and check account status |
-| `scrapeless api <target>` | Reserved namespace; currently returns a not-implemented error |
+| `scrapeless scraping-api google-search` | Get structured Google Search results (`api` is an alias) |
+| `scrapeless scraping-api result <id>` | Resume polling an existing Scraping API task |
 
 ## Installation
 
@@ -64,6 +65,7 @@ scrapeless config set api_token YOUR_API_TOKEN
 scrapeless auth status
 scrapeless unlock https://example.com --type markdown
 scrapeless crawl https://example.com --limit 10
+scrapeless scraping-api google-search --q "coffee" --hl en --gl us
 scrapeless ai chatgpt "Explain what Scrapeless is used for"
 scrapeless proxy create --gateway ap --country US
 scrapeless browser --help
@@ -113,11 +115,11 @@ scrapeless ai chatgpt "Explain web scraping" -o answer.md
 scrapeless crawl https://example.com --limit 5 --json -o crawl.json
 ```
 
-Unlocker, Crawl, and AI task creation commands support `--data '<JSON>'` and `--data @request.json` for a complete API request body. Option precedence is: explicit command-line options → JSON request body → CLI defaults. Nested objects are merged; arrays are replaced as a whole. The URL or prompt can be provided directly in the JSON body, but AI commands still require a platform. Each command sets its own `actor`.
+Unlocker, Crawl, AI, and Scraping API task creation commands support `--data '<JSON>'` and `--data @request.json` for a complete API request body. Option precedence is: explicit command-line options → JSON request body → CLI defaults. Nested objects are merged; arrays are replaced as a whole. The URL or prompt can be provided directly in the JSON body, but AI commands still require a platform. Each command sets its own `actor`.
 
 Boolean options take an explicit `true` or `false`, such as `--shopping false`. Polling options `--timeout` and `--interval` use seconds; scraping options `--wait-for` and `--scrape-timeout` use milliseconds. Place subcommand options after the subcommand, for example `ai result ID --json`.
 
-Each HTTP request has a default timeout of 60 seconds. POST requests that create tasks are not retried automatically, to avoid duplicate tasks. Failures use exit code `1`. If task polling times out, the CLI prints the last result and task ID and exits normally; the task may still be running on the server. Browser commands preserve upstream exit codes (`130` for SIGINT and `143` for SIGTERM).
+Each HTTP request has a default timeout of 60 seconds. POST requests that create tasks are not retried automatically, to avoid duplicate tasks. Failures use exit code `1`. If Crawl or AI task polling times out, the CLI prints the last result and task ID and exits normally; the task may still be running on the server. Scraping API polling timeouts exit with code `1` and report the task ID and last response on stderr. Browser commands preserve upstream exit codes (`130` for SIGINT and `143` for SIGTERM).
 
 ## Web Unlocker
 
@@ -284,6 +286,58 @@ Example of a more complex AI request:
 scrapeless ai chatgpt --data '{"input":{"prompt":"Recommend attractions in New York","country":"JP","web_search":true,"shopping":false,"should_fetch_share_link":true},"webhook":{"url":"https://example.com/webhook"}}'
 ```
 
+## Scraping API
+
+```bash
+scrapeless scraping-api google-search --q "coffee" --hl en --gl us
+scrapeless api google-search --q 'site:example.com coffee' --location 'Seattle,Washington,United States'
+scrapeless api google-search --q "coffee" --country US --start 10 -o search.json
+scrapeless api google-search --q "coffee" --proxy-url 'http://user:password@host:port'
+scrapeless api google-search --data @search-request.json --q "override query"
+scrapeless scraping-api result TASK_ID --timeout 300 --interval 3
+scrapeless scraping-api google-search --help
+```
+
+Google Search uses actor `scraper.google.search`. The CLI submits one POST to `/api/v1/scraper/request`. HTTP `200` returns the complete result JSON unchanged. HTTP `201` supplies a `taskId`; the CLI polls `/api/v1/scraper/result/{taskId}` until HTTP `200`, with subsequent `201` responses indicating that the task is still running. By default, polling runs every 5 seconds for up to 300 seconds. Use `--interval` and `--timeout` (seconds) to adjust it.
+
+HTTP `4xx`/`5xx` responses fail immediately with the full error JSON on stderr and exit code `1`; submissions are not retried. A polling timeout also exits with code `1`, reporting the task ID, last response, and command to resume. `result` uses the same polling behavior without creating another task. Successful output always contains the full JSON, including when `--json` is omitted; `-o, --output` writes it to a file. Task IDs are logged to stderr.
+
+| Option | API input / Description |
+| --- | --- |
+| `--q` | Required search query; supports Google search operators |
+| `--location`, `--uule` | Canonical or encoded location; mutually exclusive |
+| `--ludocid`, `--lsig` | Business listing CID and knowledge graph map identifier |
+| `--kgmid`, `--si`, `--ibp`, `--uds` | Knowledge graph ID, cached search, layout, and filter parameters |
+| `--google-domain` | `google_domain`; server default is `google.com` |
+| `--gl`, `--hl` | Search country and language codes |
+| `--cr`, `--lr` | Country and language restrictions; quote values containing `|` |
+| `--tbs` | Advanced search parameters |
+| `--safe` | `active` or `off` |
+| `--nfpr`, `--filter` | Integer `0` or `1` for auto-correction exclusion and result filtering |
+| `--tbm` | Search type, such as `isch`, `lcl`, `vid`, `nws`, `shop`, or `pts` |
+| `--start` | Non-negative integer result offset; multiples of 20 for `tbm=lcl` |
+| `--device` | Currently only `desktop` |
+| `--country`, `--proxy-url` | `proxy.country` and `proxy.url`, outside `input` |
+
+Optional input parameters use server defaults. Proxy configuration is optional; a non-empty proxy URL takes precedence and removes `country` from the submitted proxy object. Search country `--gl` is independent of proxy `--country`.
+
+`--data` accepts a complete request body or `@file.json`. Explicit flags override corresponding body fields, and the command always sets its own actor. Additional input parameters, such as `as_dt`, `as_eq`, and `num`, can be passed through `--data`:
+
+```json
+{
+  "actor": "scraper.google.search",
+  "input": {
+    "q": "coffee",
+    "hl": "en",
+    "gl": "us",
+    "as_eq": "instant"
+  },
+  "proxy": { "country": "US" }
+}
+```
+
+New APIs can be added to `src/scraping-api/definitions.ts` with their actor, input fields, and validation. They share request construction, proxy handling, HTTP status handling, polling, and JSON output; result schemas are preserved without API-specific parsing.
+
 ## Proxies
 
 Proxy commands build authenticated URLs locally without making HTTP requests.
@@ -363,7 +417,7 @@ node dist/cli.js --help
 npm pack --dry-run --ignore-scripts
 ```
 
-Tests use the Node.js test runner and locally mocked responses. They require no real API token and do not call paid APIs. Coverage includes request construction, all 8 AI platforms, authentication, task polling, timeouts, failures, file output, proxy URLs, browser installation/caching/integrity/argument forwarding, and release version mapping.
+Tests use the Node.js test runner and locally mocked responses. They require no real API token and do not call paid APIs. Coverage includes request construction, all 8 AI platforms, Google Search parameters and HTTP 200/201 polling, authentication, task polling, timeouts, failures, file output, proxy URLs, browser installation/caching/integrity/argument forwarding, and release version mapping.
 
 `.github/workflows/ci.yml` runs type checking, tests, builds, and npm package checks on Linux, macOS, and Windows with Node.js 22 and 24.
 
@@ -413,7 +467,7 @@ git push origin v0.2.0-beta.1
 
 - **Missing API token**: Set `SCRAPELESS_API_KEY` or run `config set api_token`. Check whether the configuration file still contains an old token.
 - **HTTP 401/403**: Check the token, account permissions, and balance. Use `auth status` to verify authentication.
-- **Task timeout**: The task may still be running on the server. Use the returned ID with `crawl result` or `ai result`, adding `--wait` to continue waiting.
+- **Task timeout**: The task may still be running on the server. Use the returned ID with `crawl result` or `ai result`, adding `--wait` to continue waiting. For Scraping API, use `scraping-api result TASK_ID`, which polls automatically.
 - **Automatic browser installation fails**: Confirm that Node.js and npm are available, the cache directory is writable, and npm and GitHub are reachable, then retry. Downloads that fail SHA-256 verification are not executed.
 - **Upstream browser session errors**: Specify `--session-id` explicitly and check whether the session has expired. Session behavior is determined by the pinned upstream version.
 
